@@ -27,7 +27,7 @@ function rewriteFiles()
 
 function restartAsterisk()
 {
-	exec('service asterisk restart', function(err, out, code) {
+	exec('asterisk -X "core restart now"', function(err, out, code) {
 	  if (err instanceof Error)
 	    throw err;
 	  process.stderr.write(err);
