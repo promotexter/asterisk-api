@@ -82,21 +82,31 @@ exports.register = function(req, res)
 	  // 	else
 	  // 	{
 
-	var autoUsername = ++series;
 
-	var user = new User();
-	// user not found
-	user.username 	= autoUsername;
-	user.password 	= autoUsername;
-	user.name 		= autoUsername;
 
-	user.save(function(err){
-		if(err) return handleError(res, "ERROR_ENCOUNTERED:C2");
+	
+	User.findOne({'deviceId': param.device_id}, function(err, doc) {
+		if(err) {console.log(err)}
+		if(doc){
+			res.send(doc);
+		} else {
+			// user not found
+			var autoUsername = ++series;
+			var user = new User();
+			user.deviceId = param.device_id;
+			user.username 	= autoUsername;
+			user.password 	= autoUsername;
+			user.name 		= autoUsername;
+			user.save(function(err){
+				if(err) return handleError(res, "ERROR_ENCOUNTERED:C2");
 
-		rewriteFiles();
+				rewriteFiles();
 
-		res.send(user);
-	})
+				res.send(user);
+			})
+		}
+	}); 
+
 	  	// }
 	  // })
 }
@@ -107,7 +117,7 @@ exports.update = function(req, res)
 
   console.log("UPDATE request", param);
 
-  User.findOne({ username : param.username }, function(err, user){
+  User.findOne({ deviceId: param.device_id}, function(err, user){
   	if(err || !user) return handleError(res, "ERROR_ENCOUNTERED:C1");
 
   	
