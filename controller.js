@@ -152,6 +152,22 @@ exports.list = function(req, res)
   })
 }
 
+exports.updatePeerStatus = function(username, isOnline) {
+	User.findOne({'username': username}, function(err, doc) {
+		if(err) {console.log(err)}
+		if(doc){
+			doc.status = 'offline';
+			if(isOnline === true) {
+				doc.status = 'online';
+			} 
+			console.log('setting ', username, 'to', doc.status);
+			doc.save();
+		} else {
+			//peep not found
+		}
+	}); 
+}
+
 function handleError(res, error)
 {
 	res.send(500, error);

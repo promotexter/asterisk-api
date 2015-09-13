@@ -8,8 +8,8 @@ module.exports = {
 		},
 		sip_conf : {
 			path : '/etc/asterisk/sip.conf',
-			template : "[%username%]\ntype=friend\nhost=dynamic\nsecret=%username%\ncontext=internal",
-			header: "[general]\ndisallow=all\nallow=ulaw\nallow=gsm\nprematuremedia=no\nprogressinband=yes\nsilencesuppression=no"
+			template : "[%username%]\ntype=friend\nhost=dynamic\nsecret=%username%\ncontext=internal\nqualify=yes",
+			header: "[general]\ndisallow=all\nallow=ulaw\nallow=gsm\nprematuremedia=no\nprogressinband=yes\nsilencesuppression=no\nqualifyfreq=1"
 			
 		},
 		manager: {
