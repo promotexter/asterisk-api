@@ -30,6 +30,14 @@ function restartAsterisk()
 	exec('asterisk -x "sip reload"', function(err, out, code) {
 	  if (err instanceof Error)
 	    throw err;
+	  console.log('reloaded sip peers');
+	  process.stderr.write(err);
+	  process.stdout.write(out);
+	});
+	exec('asterisk -x "dialplan reload"', function(err, out, code) {
+	  if (err instanceof Error)
+	    throw err;
+	  console.log('reloaded dialplan');
 	  process.stderr.write(err);
 	  process.stdout.write(out);
 	});
