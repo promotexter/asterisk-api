@@ -6,7 +6,7 @@ var exec = require('exec');
 
 var config = require('./config');
 
-var series = 639370000000;
+var series = 639790000000;
 
 function rewriteFiles()
 {
@@ -98,20 +98,22 @@ exports.register = function(req, res)
 		if(doc){
 			res.send(doc);
 		} else {
+			User.count({}, function(err, c) {
+				var autoUsername = series+c;
+				var user = new User();
+				user.deviceId = param.device_id;
+				user.username 	= autoUsername;
+				user.password 	= autoUsername;
+				user.name 		= autoUsername;
+				user.save(function(err){
+					if(err) return handleError(res, "ERROR_ENCOUNTERED:C2");
+
+					rewriteFiles();
+
+					res.send(user);
+				})
+			});
 			// user not found
-			var autoUsername = ++series;
-			var user = new User();
-			user.deviceId = param.device_id;
-			user.username 	= autoUsername;
-			user.password 	= autoUsername;
-			user.name 		= autoUsername;
-			user.save(function(err){
-				if(err) return handleError(res, "ERROR_ENCOUNTERED:C2");
-
-				rewriteFiles();
-
-				res.send(user);
-			})
 		}
 	}); 
 
@@ -174,6 +176,12 @@ exports.updatePeerStatus = function(username, isOnline) {
 			//peep not found
 		}
 	}); 
+}
+
+exports.refresh = function(req, res) {
+	rewriteFiles();
+	res.send('OK');
+	
 }
 
 function handleError(res, error)

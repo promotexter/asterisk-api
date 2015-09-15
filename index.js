@@ -12,6 +12,7 @@ app.get('/', controller.index);
 app.get('/register', controller.register);
 app.get('/update', controller.update);
 app.get('/list', controller.list);
+app.get('/list', controller.refresh);
 
 
 
